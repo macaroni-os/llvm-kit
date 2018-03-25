@@ -1,0 +1,8 @@
+# This file is deprecated as per GLEP 56 in favor of metadata.xml. Please add
+# your descriptions to your package's metadata.xml ONLY.
+# * generated automatically using egencache *
+
+sys-devel/clang-runtime:compiler-rt - Install sys-libs/compiler-rt for -rtlib=compiler-rt
+sys-devel/clang-runtime:libcxx - Install sys-libs/libcxx for -stdlib=libc++
+sys-devel/clang-runtime:openmp - Install sys-libs/libomp for -fopenmp support
+sys-devel/clang-runtime:sanitize - Enable compiler-rt sanitizer (-fsanitize*) support
