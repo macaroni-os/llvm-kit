@@ -8,27 +8,30 @@ EAPI=6
 CMAKE_MIN_VERSION=3.7.0-r1
 PYTHON_COMPAT=( python2_7 )
 
-inherit cmake-utils eapi7-ver flag-o-matic git-r3 llvm \
-	multilib-minimal multiprocessing pax-utils python-single-r1 \
+inherit cmake-utils eapi7-ver flag-o-matic llvm \
+	multilib-minimal multiprocessing pax-utils prefix python-single-r1 \
 	toolchain-funcs
+
+MY_P=cfe-${PV/_/}.src
+EXTRA_P=clang-tools-extra-${PV/_/}.src
+LLVM_P=llvm-${PV/_/}.src
 
 DESCRIPTION="C language family frontend for LLVM"
 HOMEPAGE="https://llvm.org/"
-SRC_URI=""
-EGIT_REPO_URI="https://git.llvm.org/git/clang.git
-	https://github.com/llvm-mirror/clang.git"
+SRC_URI="https://releases.llvm.org/${PV/_//}/${MY_P}.tar.xz
+	https://releases.llvm.org/${PV/_//}/${EXTRA_P}.tar.xz
+	test? ( https://releases.llvm.org/${PV/_//}/${LLVM_P}.tar.xz )
+	!doc? ( https://dev.gentoo.org/~mgorny/dist/llvm/llvm-${PV}-manpages.tar.bz2 )"
 
 # Keep in sync with sys-devel/llvm
-ALL_LLVM_EXPERIMENTAL_TARGETS=( AVR Nios2 RISCV WebAssembly )
 ALL_LLVM_TARGETS=( AArch64 AMDGPU ARM BPF Hexagon Lanai Mips MSP430
-	NVPTX PowerPC Sparc SystemZ X86 XCore
-	"${ALL_LLVM_EXPERIMENTAL_TARGETS[@]}" )
+	NVPTX PowerPC Sparc SystemZ X86 XCore )
 ALL_LLVM_TARGETS=( "${ALL_LLVM_TARGETS[@]/#/llvm_targets_}" )
 LLVM_TARGET_USEDEPS=${ALL_LLVM_TARGETS[@]/%/?}
 
 LICENSE="UoI-NCSA"
-SLOT="7"
-KEYWORDS=""
+SLOT="$(ver_cut 1)"
+KEYWORDS="~amd64 ~arm64 ~x86 ~amd64-fbsd ~amd64-linux ~ppc-macos ~x64-macos ~x86-macos"
 IUSE="debug default-compiler-rt default-libcxx doc +static-analyzer
 	test xml z3 kernel_FreeBSD ${ALL_LLVM_TARGETS[*]}"
 RESTRICT="!test? ( test )"
@@ -51,6 +54,7 @@ RDEPEND="${RDEPEND}
 	!<sys-devel/llvm-4.0.0_rc:0
 	!sys-devel/clang:0"
 PDEPEND="
+	sys-devel/clang-common
 	~sys-devel/clang-runtime-${PV}
 	default-compiler-rt? ( =sys-libs/compiler-rt-${PV%_*}* )
 	default-libcxx? ( >=sys-libs/libcxx-${PV} )"
@@ -59,10 +63,22 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	|| ( ${ALL_LLVM_TARGETS[*]} )"
 
 # We need extra level of indirection for CLANG_RESOURCE_DIR
-S=${WORKDIR}/x/y/${P}
+S=${WORKDIR}/x/y/${MY_P}
 
 # least intrusive of all
 CMAKE_BUILD_TYPE=RelWithDebInfo
+
+PATCHES=(
+	# add Prefix include paths for Darwin
+	"${FILESDIR}"/5.0.1/darwin_prefix-include-paths.patch
+
+	# fix Driver crash with CHOST prefix and long command-line
+	# https://bugs.gentoo.org/650082
+	"${FILESDIR}"/6.0.0/0001-Driver-Avoid-invalidated-iterator-in-insertTargetAnd.patch
+	# fix test failure with default-compiler-rt
+	# https://bugs.gentoo.org/650316
+	"${FILESDIR}"/6.0.0/0002-test-Fix-Cross-DSO-CFI-Android-sanitizer-test-for-rt.patch
+)
 
 # Multilib notes:
 # 1. ABI_* flags control ABIs libclang* is built for only.
@@ -85,22 +101,28 @@ src_unpack() {
 	mkdir -p x/y || die
 	cd x/y || die
 
-	git-r3_fetch "https://git.llvm.org/git/clang-tools-extra.git
-		https://github.com/llvm-mirror/clang-tools-extra.git"
-	if use test; then
-		# needed for patched gtest
-		git-r3_fetch "https://git.llvm.org/git/llvm.git
-			https://github.com/llvm-mirror/llvm.git"
-	fi
-	git-r3_fetch
+	einfo "Unpacking ${MY_P}.tar.xz ..."
+	tar -xf "${DISTDIR}/${MY_P}.tar.xz" || die
+	einfo "Unpacking ${EXTRA_P}.tar.xz ..."
+	tar -xf "${DISTDIR}/${EXTRA_P}.tar.xz" || die
 
-	git-r3_checkout https://llvm.org/git/clang-tools-extra.git \
-		"${S}"/tools/extra
+	mv "${EXTRA_P}" "${S}"/tools/extra || die
 	if use test; then
-		git-r3_checkout https://llvm.org/git/llvm.git \
-			"${WORKDIR}"/llvm '' utils/{lit,llvm-lit,unittest}
+		einfo "Unpacking parts of ${LLVM_P}.tar.xz ..."
+		tar -xf "${DISTDIR}/${LLVM_P}.tar.xz" \
+			"${LLVM_P}"/utils/{lit,llvm-lit,unittest} || die
+		mv "${LLVM_P}" "${WORKDIR}"/llvm || die
 	fi
-	git-r3_checkout "${EGIT_REPO_URI}" "${S}"
+
+	if ! use doc; then
+		einfo "Unpacking llvm-${PV}-manpages.tar.bz2 ..."
+		tar -xf "${DISTDIR}/llvm-${PV}-manpages.tar.bz2" || die
+	fi
+}
+
+src_prepare() {
+	cmake-utils_src_prepare
+	eprefixify lib/Frontend/InitHeaderSearch.cpp
 }
 
 multilib_src_configure() {
@@ -270,6 +292,12 @@ multilib_src_install_all() {
 		python_optimize "${ED}"usr/lib/llvm/${SLOT}/share/scan-view
 	fi
 
+	# install pre-generated manpages
+	if ! use doc; then
+		insinto "/usr/lib/llvm/${SLOT}/share/man/man1"
+		doins "${WORKDIR}/x/y/llvm-${PV}-manpages/clang"/*.1
+	fi
+
 	docompress "/usr/lib/llvm/${SLOT}/share/man"
 	# match 'html' non-compression
 	use doc && docompress -x "/usr/share/doc/${PF}/tools-extra"
@@ -281,6 +309,13 @@ pkg_postinst() {
 	if [[ ${ROOT} == / && -f ${EPREFIX}/usr/share/eselect/modules/compiler-shadow.eselect ]] ; then
 		eselect compiler-shadow update all
 	fi
+
+	elog "You can find additional utility scripts in:"
+	elog "  ${EROOT}/usr/lib/llvm/${SLOT}/share/clang"
+	elog "To use these scripts, you will need Python 2.7. Some of them are vim"
+	elog "integration scripts (with instructions inside). The run-clang-tidy.py"
+	elog "scripts requires the following additional package:"
+	elog "  dev-python/pyyaml"
 }
 
 pkg_postrm() {
