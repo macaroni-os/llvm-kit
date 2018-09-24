@@ -1,0 +1,14 @@
+DEFINED_PHASES=compile configure install prepare pretend setup unpack
+DEPEND=sys-libs/zlib:0= libffi? ( >=virtual/libffi-3.0.13-r1:0= ) app-arch/xz-utils dev-lang/perl >=sys-devel/make-3.81 >=sys-devel/flex-2.5.4 >=sys-devel/bison-1.875d || ( >=sys-devel/gcc-apple-4.2.1 >=sys-devel/llvm-3.3 ) >=sys-devel/binutils-apple-5.1 libffi? ( virtual/pkgconfig ) !!<dev-python/configparser-3.3.0.2 || ( >=dev-lang/python-2.7.5-r2:2.7 )
+DESCRIPTION=Low Level Virtual Machine
+EAPI=5
+HOMEPAGE=https://llvm.org/
+IUSE=clang +libffi
+KEYWORDS=~ppc-macos ~x64-macos ~x86-macos
+LICENSE=UoI-NCSA rc BSD public-domain
+PDEPEND=clang? ( =sys-devel/clang-3.6.2-r100 )
+RDEPEND=sys-libs/zlib:0= libffi? ( >=virtual/libffi-3.0.13-r1:0= ) clang? ( !<=sys-devel/clang-3.6.2-r99 !>=sys-devel/clang-9999 )
+SLOT=0/3.6
+SRC_URI=https://llvm.org/releases/3.6.2/llvm-3.6.2.src.tar.xz clang? ( https://llvm.org/releases/3.6.2/compiler-rt-3.6.2.src.tar.xz https://llvm.org/releases/3.6.2/cfe-3.6.2.src.tar.xz ) https://dev.gentoo.org/~voyageur/distfiles/llvm-3.6.1-manpages.tar.bz2 https://dev.gentoo.org/~mgorny/dist/llvm/llvm-3.6.2-patchset.tar.gz
+_eclasses_=check-reqs	21aa24510a44d259c03425a957336b3b	epatch	8233751dc5105a6ae8fcd86ce2bb0247	epunt-cxx	f8073339d152f56626493f43d8ba4691	estack	5ac2a138d0b33354b764d84f9e835db8	eutils	1fb064d93b3ffd05c2fb19ef430a4aa1	flag-o-matic	55aaa148741116aa54ad0d80e361818e	ltprune	2770eed66a9b8ef944714cd0e968182e	multilib	97f470f374f2e94ccab04a2fb21d811e	pax-utils	e85f015e815dd463b0c206d781ef45a5	prefix	e51c7882b7b721e54e684f7eb143cbfe	python-any-r1	4900ae970f827a22d33d41bd8b8f9ace	python-utils-r1	b5fdfa15cbe2f6299a482bf5d0c5925d	toolchain-funcs	6eb35f81556258a4bc9182ad3dfd58ee
+_md5_=cbc2e15354e954a7e9bbd03cdfb3571f
