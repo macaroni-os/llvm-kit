@@ -13,8 +13,8 @@ inherit cmake-utils eapi7-ver flag-o-matic multilib-minimal \
 
 DESCRIPTION="Low Level Virtual Machine"
 HOMEPAGE="https://llvm.org/"
-SRC_URI="https://prereleases.llvm.org/${PV/_//}/${P/_/}.src.tar.xz"
-#	!doc? ( https://dev.gentoo.org/~mgorny/dist/llvm/${P}-manpages.tar.bz2 )"
+SRC_URI="https://releases.llvm.org/${PV/_//}/${P/_/}.src.tar.xz
+	!doc? ( https://dev.gentoo.org/~mgorny/dist/llvm/${P}-manpages.tar.bz2 )"
 
 # Keep in sync with CMakeLists.txt
 ALL_LLVM_TARGETS=( AArch64 AMDGPU ARM BPF Hexagon Lanai Mips MSP430
@@ -32,13 +32,14 @@ ALL_LLVM_TARGETS=( "${ALL_LLVM_TARGETS[@]/#/llvm_targets_}" )
 LICENSE="UoI-NCSA rc BSD public-domain
 	llvm_targets_ARM? ( LLVM-Grant )"
 SLOT="$(ver_cut 1)"
-KEYWORDS=""
-IUSE="debug doc gold libedit +libffi ncurses test xar xml
+KEYWORDS="~amd64 ~arm ~arm64 ~ppc64 ~x86 ~amd64-fbsd ~amd64-linux ~ppc-macos ~x64-macos ~x86-macos"
+IUSE="debug doc exegesis gold libedit +libffi ncurses test xar xml
 	kernel_Darwin ${ALL_LLVM_TARGETS[*]}"
 RESTRICT="!test? ( test )"
 
 RDEPEND="
 	sys-libs/zlib:0=
+	exegesis? ( dev-libs/libpfm:= )
 	gold? ( >=sys-devel/binutils-2.22:*[cxx] )
 	libedit? ( dev-libs/libedit:0=[${MULTILIB_USEDEP}] )
 	libffi? ( >=virtual/libffi-3.0.13-r1:0=[${MULTILIB_USEDEP}] )
@@ -68,8 +69,7 @@ PDEPEND="sys-devel/llvm-common
 	gold? ( >=sys-devel/llvmgold-${SLOT} )"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
-	|| ( ${ALL_LLVM_TARGETS[*]} )
-	doc"
+	|| ( ${ALL_LLVM_TARGETS[*]} )"
 
 S=${WORKDIR}/${P/_/}.src
 
@@ -112,6 +112,7 @@ multilib_src_configure() {
 		-DLLVM_ENABLE_TERMINFO=$(usex ncurses)
 		-DLLVM_ENABLE_LIBXML2=$(usex xml)
 		-DLLVM_ENABLE_ASSERTIONS=$(usex debug)
+		-DLLVM_ENABLE_LIBPFM=$(usex exegesis)
 		-DLLVM_ENABLE_EH=ON
 		-DLLVM_ENABLE_RTTI=ON
 
@@ -251,7 +252,7 @@ multilib_src_install_all() {
 
 pkg_postinst() {
 	elog "You can find additional opt-viewer utility scripts in:"
-	elog "  ${EROOT}/usr/lib/llvm/${SLOT}/share/opt-viewer"
+	elog "  ${EROOT%/}/usr/lib/llvm/${SLOT}/share/opt-viewer"
 	elog "To use these scripts, you will need Python 2.7 along with the following"
 	elog "packages:"
 	elog "  dev-python/pygments (for opt-viewer)"
