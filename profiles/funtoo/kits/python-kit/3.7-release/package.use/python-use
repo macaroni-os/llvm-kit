@@ -3,8 +3,6 @@
 =dev-ml/llvm-ocaml-7.1.0 python_single_target_python2_7
 =dev-ml/llvm-ocaml-8.0.0 python_single_target_python2_7
 =dev-ml/llvm-ocaml-8.0.9999 python_single_target_python2_7
-=dev-python/clang-python-5.0.2 python_single_target_python2_7
-=dev-python/clang-python-6.0.1 python_single_target_python2_7
 =sys-devel/clang-5.0.2 python_single_target_python2_7
 =sys-devel/clang-6.0.1 python_single_target_python2_7
 =sys-devel/clang-7.1.0 python_single_target_python2_7
@@ -38,9 +36,5 @@
 =sys-libs/libcxxabi-7.1.0 python_single_target_python2_7
 =sys-libs/libcxxabi-8.0.0 python_single_target_python2_7
 =sys-libs/libcxxabi-8.0.9999 python_single_target_python2_7
-=sys-libs/llvm-libunwind-6.0.1 python_single_target_python2_7
-=sys-libs/llvm-libunwind-7.1.0 python_single_target_python2_7
-=sys-libs/llvm-libunwind-8.0.0 python_single_target_python2_7
-=sys-libs/llvm-libunwind-8.0.9999 python_single_target_python2_7
 dev-util/lldb python_single_target_python2_7
 sys-libs/libomp python_single_target_python2_7
