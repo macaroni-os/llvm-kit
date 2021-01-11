@@ -1,0 +1,15 @@
+DEFINED_PHASES=install test unpack
+DEPEND=>=sys-devel/clang-9.0.1:* !sys-devel/llvm:0[clang(-),python(-)] !sys-devel/clang:0[python(-)] python_targets_python3_7? ( dev-lang/python:3.7 ) >=dev-lang/python-exec-2:=[python_targets_python3_7(-)?,-python_single_target_python3_7(-)]
+DESCRIPTION=Python bindings for sys-devel/clang
+EAPI=7
+HOMEPAGE=https://llvm.org/
+IUSE=test python_targets_python3_7
+KEYWORDS=~amd64 ~arm ~arm64 ~x86
+LICENSE=Apache-2.0-with-LLVM-exceptions UoI-NCSA
+RDEPEND=>=sys-devel/clang-9.0.1:* !sys-devel/llvm:0[clang(-),python(-)] !sys-devel/clang:0[python(-)] python_targets_python3_7? ( dev-lang/python:3.7 ) >=dev-lang/python-exec-2:=[python_targets_python3_7(-)?,-python_single_target_python3_7(-)]
+REQUIRED_USE=|| ( python_targets_python3_7 )
+RESTRICT=!test? ( test )
+SLOT=0
+SRC_URI=https://github.com/llvm/llvm-project/archive/llvmorg-9.0.1.tar.gz
+_eclasses_=llvm.org	f9a86faa44b9076b1603ff7c37564776	multibuild	b2c915190b051f55a23b9354b9849847	multilib	1d91b03d42ab6308b5f4f6b598ed110e	multiprocessing	cac3169468f893670dac3e7cb940e045	python-r1	5bbb250a8d0b8f4496dcef8e8c1c1a8a	python-utils-r1	263e4bbfa6a84be6dc6272a6702aedca	toolchain-funcs	8c7f9d80beedd16f2e5a7f612c609529
+_md5_=8dd5230415f714a0a51e15a668988d8a

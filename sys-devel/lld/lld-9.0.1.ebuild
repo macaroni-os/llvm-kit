@@ -1,3 +1,4 @@
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
@@ -13,7 +14,7 @@ llvm.org_set_globals
 
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA"
 SLOT="0"
-KEYWORDS="*"
+KEYWORDS="amd64 arm arm64 ppc64 x86"
 IUSE="test"
 RESTRICT="!test? ( test )"
 
@@ -53,4 +54,3 @@ src_test() {
 	local -x LIT_PRESERVES_TMP=1
 	cmake-utils_src_make check-lld
 }
-

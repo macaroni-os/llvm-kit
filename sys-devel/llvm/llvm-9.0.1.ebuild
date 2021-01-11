@@ -1,8 +1,9 @@
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3+ )
+PYTHON_COMPAT=( python3_{6,7} )
 inherit cmake-utils llvm.org multilib-minimal multiprocessing \
 	pax-utils python-any-r1 toolchain-funcs
 
@@ -28,7 +29,7 @@ ALL_LLVM_TARGETS=( "${ALL_LLVM_TARGETS[@]/#/llvm_targets_}" )
 
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA BSD public-domain rc"
 SLOT="$(ver_cut 1)"
-KEYWORDS="*"
+KEYWORDS="amd64 arm arm64 ppc64 x86 ~amd64-linux ~ppc-macos ~x64-macos ~x86-macos"
 IUSE="debug doc exegesis gold libedit +libffi ncurses test xar xml z3
 	kernel_Darwin ${ALL_LLVM_TARGETS[*]}"
 REQUIRED_USE="|| ( ${ALL_LLVM_TARGETS[*]} )"
@@ -37,14 +38,9 @@ RESTRICT="!test? ( test )"
 RDEPEND="
 	sys-libs/zlib:0=[${MULTILIB_USEDEP}]
 	exegesis? ( dev-libs/libpfm:= )
-	gold? (
-		|| (
-			>=sys-devel/binutils-2.31.1-r4:*[plugins]
-			<sys-devel/binutils-2.31.1-r4:*[cxx]
-		)
-	)
+	gold? ( >=sys-devel/binutils-2.31.1-r4:*[plugins] )
 	libedit? ( dev-libs/libedit:0=[${MULTILIB_USEDEP}] )
-	libffi? ( >=virtual/libffi-3.0.13-r1:0=[${MULTILIB_USEDEP}] )
+	libffi? ( >=dev-libs/libffi-3.0.13-r1:0=[${MULTILIB_USEDEP}] )
 	ncurses? ( >=sys-libs/ncurses-5.9-r3:0=[${MULTILIB_USEDEP}] )
 	xar? ( app-arch/xar )
 	xml? ( dev-libs/libxml2:2=[${MULTILIB_USEDEP}] )
@@ -53,9 +49,6 @@ DEPEND="${RDEPEND}
 	gold? ( sys-libs/binutils-libs )"
 BDEPEND="
 	dev-lang/perl
-	|| ( >=sys-devel/gcc-3.0 >=sys-devel/llvm-3.5
-		( >=sys-freebsd/freebsd-lib-9.1-r10 sys-libs/libcxx )
-	)
 	kernel_Darwin? (
 		<sys-libs/libcxx-$(ver_cut 1-3).9999
 		>=sys-devel/binutils-apple-5.1

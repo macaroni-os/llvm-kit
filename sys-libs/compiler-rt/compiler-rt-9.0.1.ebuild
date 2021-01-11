@@ -1,8 +1,9 @@
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3+ )
+PYTHON_COMPAT=( python3_{6,7} )
 inherit cmake-utils flag-o-matic llvm llvm.org multiprocessing \
 	python-any-r1 toolchain-funcs
 
@@ -13,7 +14,7 @@ llvm.org_set_globals
 
 LICENSE="Apache-2.0-with-LLVM-exceptions || ( UoI-NCSA MIT )"
 SLOT="$(ver_cut 1-3)"
-KEYWORDS="*"
+KEYWORDS="amd64 arm arm64 ppc64 x86 ~amd64-linux ~ppc-macos ~x64-macos ~x86-macos"
 IUSE="+clang test"
 RESTRICT="!test? ( test ) !clang? ( test )"
 

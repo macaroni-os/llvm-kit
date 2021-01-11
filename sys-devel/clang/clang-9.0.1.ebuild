@@ -1,8 +1,9 @@
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python2+ )
+PYTHON_COMPAT=( python3_{6,7,8} )
 inherit cmake-utils llvm llvm.org multilib-minimal multiprocessing \
 	pax-utils python-single-r1 toolchain-funcs
 
@@ -24,14 +25,13 @@ S=${WORKDIR}/x/y/clang
 ALL_LLVM_TARGETS=( AArch64 AMDGPU ARM BPF Hexagon Lanai Mips MSP430
 	NVPTX PowerPC RISCV Sparc SystemZ WebAssembly X86 XCore )
 ALL_LLVM_TARGETS=( "${ALL_LLVM_TARGETS[@]/#/llvm_targets_}" )
-LLVM_TARGET_USEDEPS=${ALL_LLVM_TARGETS[@]/%/?}
 
 # MSVCSetupApi.h: MIT
 # sorttable.js: MIT
 
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA MIT"
 SLOT="$(ver_cut 1)"
-KEYWORDS="*"
+KEYWORDS="amd64 arm arm64 ppc64 x86 ~amd64-linux"
 IUSE="debug default-compiler-rt default-libcxx doc +static-analyzer
 	test xml kernel_FreeBSD ${ALL_LLVM_TARGETS[*]}"
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
@@ -39,10 +39,16 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE}
 RESTRICT="!test? ( test )"
 
 RDEPEND="
-	~sys-devel/llvm-${PV}:${SLOT}=[debug=,${LLVM_TARGET_USEDEPS// /,},${MULTILIB_USEDEP}]
+	~sys-devel/llvm-${PV}:${SLOT}=[debug=,${MULTILIB_USEDEP}]
 	static-analyzer? ( dev-lang/perl:* )
 	xml? ( dev-libs/libxml2:2=[${MULTILIB_USEDEP}] )
 	${PYTHON_DEPS}"
+for x in "${ALL_LLVM_TARGETS[@]}"; do
+	RDEPEND+="
+		${x}? ( ~sys-devel/llvm-${PV}:${SLOT}[${x}] )"
+done
+unset x
+
 DEPEND="${RDEPEND}"
 BDEPEND="
 	doc? ( dev-python/sphinx )

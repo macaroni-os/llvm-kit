@@ -1,8 +1,9 @@
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3+ )
+PYTHON_COMPAT=( python3_{6,7} )
 inherit cmake-multilib llvm llvm.org multiprocessing python-any-r1 toolchain-funcs
 
 DESCRIPTION="Low level support for a standard C++ library"
@@ -13,7 +14,7 @@ llvm.org_set_globals
 
 LICENSE="Apache-2.0-with-LLVM-exceptions || ( UoI-NCSA MIT )"
 SLOT="0"
-KEYWORDS="*"
+KEYWORDS="amd64 arm arm64 x86"
 IUSE="+libunwind +static-libs test elibc_musl"
 RESTRICT="!test? ( test )"
 
@@ -26,11 +27,10 @@ RDEPEND="
 	)"
 # llvm-6 for new lit options
 DEPEND="${RDEPEND}
-	>=sys-devel/llvm-6
-	test? (
-		>=sys-devel/clang-3.9.0
-		$(python_gen_any_dep 'dev-python/lit[${PYTHON_USEDEP}]')
-	)"
+	>=sys-devel/llvm-6"
+BDEPEND="
+	test? ( >=sys-devel/clang-3.9.0
+		$(python_gen_any_dep 'dev-python/lit[${PYTHON_USEDEP}]') )"
 
 # least intrusive of all
 CMAKE_BUILD_TYPE=RelWithDebInfo
