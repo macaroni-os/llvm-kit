@@ -1,3 +1,0 @@
-dev-util/lldb python_single_target_python2_7
-sys-devel/clang python_single_target_python2_7
-sys-devel/llvm python_single_target_python2_7
