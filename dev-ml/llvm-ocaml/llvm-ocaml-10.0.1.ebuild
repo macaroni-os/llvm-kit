@@ -1,9 +1,8 @@
-# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
 
-PYTHON_COMPAT=( python3_{6..9} )
+PYTHON_COMPAT=( python3+ )
 inherit cmake llvm llvm.org python-any-r1
 
 DESCRIPTION="OCaml bindings for LLVM"
@@ -20,7 +19,7 @@ ALL_LLVM_TARGETS=( "${ALL_LLVM_TARGETS[@]/#/llvm_targets_}" )
 
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA"
 SLOT="0/${PV}"
-KEYWORDS="~amd64 ~arm ~x86"
+KEYWORDS="*"
 IUSE="debug test ${ALL_LLVM_TARGETS[*]}"
 REQUIRED_USE="|| ( ${ALL_LLVM_TARGETS[*]} )"
 RESTRICT="!test? ( test )"
