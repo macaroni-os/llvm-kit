@@ -1,4 +1,4 @@
-BDEPEND=|| ( sys-devel/clang:11 sys-devel/clang:10 ) || ( dev-lang/python:3.10 dev-lang/python:3.8 dev-lang/python:3.9 dev-lang/python:3.7 ) dev-util/ninja dev-util/cmake
+BDEPEND=|| ( sys-devel/clang:11 sys-devel/clang:10 ) || ( dev-lang/python:3.8 dev-lang/python:3.9 dev-lang/python:3.7 dev-lang/python:3.10 ) dev-util/ninja dev-util/cmake
 DEFINED_PHASES=compile configure install prepare setup test
 DEPEND=!!sys-devel/llvm:0
 DESCRIPTION=OpenCL C library
