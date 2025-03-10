@@ -105,6 +105,7 @@ gen_shared_ldscript() {
 	gen_ldscript "${deps}" > "${ED}/usr/${libdir}/libc++.so" || die
 }
 src_install() {
+	local libdir=$(get_libdir)
 	cmake_src_install
 	mv "${ED}/usr/${libdir}/libc++experimental.a" "${ED}/usr/${libdir}/libc++_static.a" || die
 	gen_shared_ldscript
