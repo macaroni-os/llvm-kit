@@ -12,12 +12,12 @@ LICENSE="Apache-2.0-with-LLVM-exceptions || ( UoI-NCSA MIT )"
 SLOT="16"
 KEYWORDS="*"
 IUSE="+clang debug"
-DEPEND="sys-devel/llvm
-	
-"
 BDEPEND="dev-util/cmake
 	clang? ( sys-devel/clang )
 	${PYTHON_DEPS}
+	
+"
+DEPEND="sys-devel/llvm
 	
 "
 S="${WORKDIR}/llvm-src"
