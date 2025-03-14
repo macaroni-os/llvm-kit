@@ -15,13 +15,13 @@ KEYWORDS="*"
 IUSE="+clang debug elibc_glibc +libfuzzer +memprof +orc +profile +xray ${SANITIZER_FLAGS[@]/#/+}"
 REQUIRED_USE="|| ( ${SANITIZER_FLAGS[*]} libfuzzer orc profile xray )
 "
-DEPEND="sys-devel/llvm
-	
-"
 BDEPEND="dev-util/cmake
 	clang? ( sys-devel/clang )
 	elibc_glibc? ( net-libs/libtirpc )
 	${PYTHON_DEPS}
+	
+"
+DEPEND="sys-devel/llvm
 	
 "
 S="${WORKDIR}/llvm-src"
