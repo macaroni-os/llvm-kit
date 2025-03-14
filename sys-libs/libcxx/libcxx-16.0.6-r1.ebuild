@@ -12,15 +12,15 @@ SLOT="0"
 KEYWORDS="*"
 IUSE="static-libs clang +libcxxabi +libunwind"
 REQUIRED_USE="libunwind? ( libcxxabi )"
-DEPEND="${RDEPEND}
-	sys-devel/llvm:16
-	
-"
 BDEPEND="clang? ( sys-devel/clang:16 )
 	
 "
 RDEPEND="libcxxabi? ( ~sys-libs/libcxxabi-${PV}[static-libs?] )
 	!libcxxabi? ( sys-devel/gcc[cxx] )
+	
+"
+DEPEND="${RDEPEND}
+	sys-devel/llvm:16
 	
 "
 S="${WORKDIR}/llvm-src/runtimes"
