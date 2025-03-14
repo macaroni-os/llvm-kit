@@ -10,11 +10,11 @@ SRC_URI="https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.6/l
 LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA"
 SLOT="0"
 KEYWORDS="*"
-DEPEND=">=sys-devel/clang-${PV}:*
-	${PYTHON_DEPS}
+RDEPEND="${PYTHON_DEPS}
 	
 "
-RDEPEND="${PYTHON_DEPS}
+DEPEND=">=sys-devel/clang-${PV}:*
+	${PYTHON_DEPS}
 	
 "
 S="${WORKDIR}/llvm-src/clang/bindings/python"
