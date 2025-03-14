@@ -11,10 +11,6 @@ LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA BSD public-domain rc"
 SLOT="16"
 KEYWORDS="*"
 IUSE="debug doc exegesis gold libedit +libffi ncurses xar xml z3 zstd binutils-plugin"
-DEPEND="${RDEPEND}
-	gold? ( sys-libs/binutils-libs )
-	
-"
 BDEPEND="dev-lang/perl
 	dev-util/cmake
 	sys-devel/gnuconfig
@@ -40,6 +36,10 @@ RDEPEND="sys-libs/zlib:=
 "
 PDEPEND="sys-devel/llvm-common
 	gold? ( >=sys-devel/llvmgold-${SLOT} )
+	
+"
+DEPEND="${RDEPEND}
+	gold? ( sys-libs/binutils-libs )
 	
 "
 
