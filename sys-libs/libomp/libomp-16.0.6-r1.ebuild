@@ -13,9 +13,6 @@ IUSE="cuda debug hwloc offload ompt llvm_targets_AMDGPU llvm_targets_NVPTX abi_x
 REQUIRED_USE="cuda? ( llvm_targets_NVPTX )
 offload? ( cuda? ( abi_x86_64 ) )
 "
-DEPEND="${RDEPEND}
-	
-"
 BDEPEND="dev-lang/perl
 	offload? (
 	  llvm_targets_AMDGPU? ( sys-devel/clang )
@@ -30,6 +27,9 @@ RDEPEND="hwloc? ( sys-apps/hwloc:0= )
 	  dev-libs/libffi
 	  ~sys-devel/llvm-16.0.6
 	)
+	
+"
+DEPEND="${RDEPEND}
 	
 "
 S="${WORKDIR}/llvm-src/openmp"
