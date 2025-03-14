@@ -12,10 +12,6 @@ LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA BSD public-domain rc"
 SLOT="0"
 KEYWORDS="*"
 IUSE="+libunwind clang static-libs"
-DEPEND="${RDEPEND}
-	sys-devel/llvm:16
-	
-"
 BDEPEND="clang? ( sys-devel/clang:16 )
 	
 "
@@ -25,6 +21,10 @@ RDEPEND="libunwind? (
 	    sys-libs/llvm-libunwind[static-libs?]
 	  )
 	)
+	
+"
+DEPEND="${RDEPEND}
+	sys-devel/llvm:16
 	
 "
 S="${WORKDIR}/llvm-src/runtimes"
