@@ -11,11 +11,11 @@ LICENSE="Apache-2.0-with-LLVM-exceptions UoI-NCSA"
 SLOT="16"
 KEYWORDS="*"
 IUSE="debug"
-DEPEND="${RDEPEND}
-"
 RDEPEND="~sys-devel/llvm-16.0.6
 	sys-libs/zlib:=
 	
+"
+DEPEND="${RDEPEND}
 "
 S="${WORKDIR}/llvm-src/lld"
 post_src_unpack() {
