@@ -11,14 +11,14 @@ LICENSE="UoI-NCSA"
 SLOT="16"
 KEYWORDS="*"
 IUSE="tools clang"
+RDEPEND="sys-devel/clang:16=
+	
+"
 DEPEND="dev-util/spirv-headers
 	${RDEPEND}
 	clang? (
 	  sys-devel/clang:16=
 	)
-	
-"
-RDEPEND="sys-devel/clang:16=
 	
 "
 post_src_unpack() {
