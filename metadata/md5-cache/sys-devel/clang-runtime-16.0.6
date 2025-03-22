@@ -1,0 +1,11 @@
+DEFINED_PHASES=-
+DESCRIPTION=Meta-ebuild for clang runtime libraries
+EAPI=7
+HOMEPAGE=https://llvm.org/
+IUSE=+compiler-rt libcxx openmp +sanitize
+KEYWORDS=*
+LICENSE=metapackage
+RDEPEND=compiler-rt? ( ~sys-libs/compiler-rt-16.0.6:16 sanitize? ( ~sys-libs/compiler-rt-sanitizers-16.0.6:16 ) ) libcxx? ( >=sys-libs/libcxx-16.0.6 ) openmp? ( >=sys-libs/libomp-16.0.6 )
+REQUIRED_USE=sanitize? ( compiler-rt )
+SLOT=16
+_md5_=8fad885f0a2b2fb5da50abd071a19843
