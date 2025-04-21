@@ -64,7 +64,7 @@ src_prepare() {
 
 src_configure() {
 	local llvm_version=$(llvm-config --version) || die
-	local clang_version=16
+	local clang_version=$(ver_cut 1-3 "${llvm_version}")
 
 	local distr_components="bash-autocomplete;clang-cmake-exports;clang-headers;clang-resource-headers;libclang-headers;libclang-python-bindings;aarch64-resource-headers;arm-common-resource-headers;arm-resource-headers;core-resource-headers;cuda-resource-headers;hexagon-resource-headers;hip-resource-headers;hlsl-resource-headers;mips-resource-headers;opencl-resource-headers;openmp-resource-headers;ppc-htm-resource-headers;ppc-resource-headers;riscv-resource-headers;systemz-resource-headers;utility-resource-headers;ve-resource-headers;webassembly-resource-headers;windows-resource-headers;x86-resource-headers;clang-cpp;libclang;amdgpu-arch;c-index-test;clang;clang-format;clang-offload-bundler;clang-offload-packager;clang-refactor;clang-repl;clang-rename;clang-scan-deps;diagtool;hmaptool;nvptx-arch;clang-tblgen"
 	if use extra ; then
@@ -181,6 +181,7 @@ src_install() {
 	# note: we use two version components here (vs 3 in runtime path)
 	local llvm_version=$(llvm-config --version) || die
 	local clang_version=$(ver_cut 1 "${llvm_version}")
+	local clang_full_version=$(ver_cut 1-3 "${llvm_version}")
 	local clang_tools=( clang clang++ clang-cl clang-cpp )
 	local abi i
 

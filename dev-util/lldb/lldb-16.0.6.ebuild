@@ -1,7 +1,7 @@
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=7
-PYTHON_COMPAT=( python3+ )
+PYTHON_COMPAT=( python3+)
 CMAKE_BUILD_TYPE=RelWithDebInfo
 inherit cmake python-single-r1
 

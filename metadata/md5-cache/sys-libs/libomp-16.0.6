@@ -1,0 +1,14 @@
+BDEPEND=dev-lang/perl offload? ( llvm_targets_AMDGPU? ( sys-devel/clang ) llvm_targets_NVPTX? ( sys-devel/clang ) virtual/pkgconfig ) dev-util/ninja dev-util/cmake
+DEFINED_PHASES=compile configure install prepare test
+DESCRIPTION=OpenMP runtime library for LLVM/clang compiler
+EAPI=7
+HOMEPAGE=https://openmp.llvm.org/
+IUSE=cuda debug hwloc offload ompt llvm_targets_AMDGPU llvm_targets_NVPTX abi_x86_64
+KEYWORDS=*
+LICENSE=Apache-2.0-with-LLVM-exceptions || ( UoI-NCSA MIT )
+RDEPEND=hwloc? ( sys-apps/hwloc:0= ) offload? ( virtual/libelf dev-libs/libffi ~sys-devel/llvm-16.0.6 )
+REQUIRED_USE=cuda? ( llvm_targets_NVPTX ) offload? ( cuda? ( abi_x86_64 ) )
+SLOT=0
+SRC_URI=https://github.com/llvm/llvm-project/releases/download/llvmorg-16.0.6/llvm-project-16.0.6.src.tar.xz -> llvm-project-16.0.6.src.tar.xz
+_eclasses_=cmake	ac7cb516f6a288b6a82bc0649ce49878	eutils	6e6c2737b59a4b982de6fb3ecefd87f8	flag-o-matic	d0939f99dd528dd0c5ec25284877bf5c	multilib	d410501a125f99ffb560b0c523cd3d1e	multiprocessing	cac3169468f893670dac3e7cb940e045	ninja-utils	e7575bc4a90349d76e72777013b2bbc2	toolchain-funcs	24921b57d6561d87cbef4916a296ada4	xdg-utils	14d00d009167652b1fa363e55effe213
+_md5_=24c7df306682a35d8320bdb563cd2444
